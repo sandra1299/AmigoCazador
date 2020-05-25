@@ -1,0 +1,39 @@
+using AmigoCazador.COMMON.Entidades;
+using AmigoCazador.COMMON.Interfaz;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace AmigoCazador.BIZ
+{
+    public class ManejadorUsuario : IManejadorUsuario
+    {
+        IRepositorio<Usuario> usuario;
+        public ManejadorUsuario(IRepositorio<Usuario> usuario)
+        {
+            this.usuario = usuario;
+        }
+        public List<Usuario> Leer => usuario.Read.OrderBy(p => p.NombreUsuario).ToList();
+
+        public bool Agregar(Usuario entidad)
+        {
+            return usuario.Create(entidad);
+        }
+
+        public Usuario Buscador(string Id)
+        {
+            return Leer.Where(e => e.Id == Id).SingleOrDefault();
+        }
+
+        public bool Eliminar(string id)
+        {
+            return usuario.Delete(id);
+        }
+
+        public bool Modificar(Usuario entidad)
+        {
+            return usuario.Update(entidad);
+        }
+    }
+}
